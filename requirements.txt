@@ -12,3 +12,4 @@ certifi
 beautifulsoup4
 readability-lxml
 trafilatura
+pydantic

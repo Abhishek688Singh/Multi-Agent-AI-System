@@ -11,13 +11,14 @@ from langchain.tools import tool
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from readability import Document
+from pydantic import AnyUrl, BaseModel
 
 load_dotenv()
 os.environ["GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY")
 LANG_SEARCH_API_KEY = os.getenv("LANG_SEARCH_API_KEY")
 
 
-def internet_search_tool(query:str, result_count:int = 2)->str:
+def internet_search(query:str, result_count:int = 2)->str:
     """Get the information from the internet"""
     request = Request(
     "https://api.langsearch.com/v1/web-search",
@@ -38,7 +39,8 @@ def internet_search_tool(query:str, result_count:int = 2)->str:
         return json.load(response)
 
 
-def scrape_search_tool(search_results: list[str]) -> list[dict]:
+@tool
+def scrape_url_tool(url: list[AnyUrl]) -> list[dict]:
     """
     Extract URLs from search results and scrape webpage content
     using BeautifulSoup.
@@ -54,20 +56,10 @@ def scrape_search_tool(search_results: list[str]) -> list[dict]:
         )
     }
 
-    for result in search_results:
-        # Extract title and URL
-        title_match = re.search(r"Title:(.*?)\nURL:", result, re.DOTALL)
-        url_match = re.search(r"URL:(.*?)\nContent:", result, re.DOTALL)
-
-        if not url_match:
-            continue
-
-        title = title_match.group(1).strip() if title_match else "Unknown"
-        url = url_match.group(1).strip()
-
+    for link in url:
         try:
             response = requests.get(
-                url,
+                link,
                 headers=headers,
                 timeout=15
             )
@@ -104,15 +96,13 @@ def scrape_search_tool(search_results: list[str]) -> list[dict]:
             )
 
             scraped_pages.append({
-                "title": title,
-                "url": url,
+                "url": link,
                 "content": content
             })
 
         except requests.RequestException as error:
             scraped_pages.append({
-                "title": title,
-                "url": url,
+                "url": link,
                 "content": None,
                 "error": str(error)
             })
@@ -120,17 +110,19 @@ def scrape_search_tool(search_results: list[str]) -> list[dict]:
     return scraped_pages
 
 
+@tool
 def web_search_tool(query: str):
-    """Get details from web by scraping pages."""
-    # (req/res) <--> web_search_tool <--> internet_search_tool
-    #                    |________ <--> scrape_search_tool
-    result = internet_search_tool(query=query)
+    """Search the details in web"""
+
+    result = internet_search(query=query)
 
     data = []
 
     for res in result['data']['webPages']['value']:
-        data.append(f"Title:{res['name']}.\nURL:{res['url']}\nContent:{res['text']}\n\n-----\n\n")
+        data.append({
+            "Title":res['name'],
+            "URL":res['url'],
+            "Content":res['text']
+            })
 
-    scraped_data = scrape_search_tool(data)
-
-    return scraped_data
+    return data
