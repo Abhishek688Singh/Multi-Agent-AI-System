@@ -1,0 +1,11 @@
+langchain
+langgraph
+python-dotenv
+langchain_community
+langchain-google-genai
+ipykernel
+pydantic
+typing
+email-validator
+requests
+certifi
