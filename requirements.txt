@@ -9,3 +9,6 @@ typing
 email-validator
 requests
 certifi
+beautifulsoup4
+readability-lxml
+trafilatura
