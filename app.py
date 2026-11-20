@@ -14,87 +14,325 @@ st.set_page_config(
 # ---------- Apple-inspired visual system ----------
 st.markdown("""
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
 
+/* ---------- Design tokens ---------- */
 :root {
     --ink: #202124;
-    --muted: #777b82;
-    --line: #e8e9eb;
+    --muted: #737780;
+    --line: #e5e5e7;
     --paper: #ffffff;
     --canvas: #f6f6f4;
+    --sidebar: #fbfbfa;
     --accent: #2864dc;
     --soft-blue: #edf3ff;
+
+    /* Override Streamlit theme variables */
+    --text-color: #202124;
+    --background-color: #f6f6f4;
+    --secondary-background-color: #ffffff;
+    --primary-color: #2864dc;
 }
-html, body, [class*="css"] {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+/* ---------- Global reset ---------- */
+html, body, .stApp {
+    background-color: var(--canvas) !important;
     color: var(--ink) !important;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
-.stApp { background: var(--canvas); }
-header[data-testid="stHeader"] { background: transparent; }
-.block-container { padding-top: 2.1rem; padding-bottom: 4rem; max-width: 1380px; }
+
+.stApp,
+.stApp p,
+.stApp span,
+.stApp label,
+.stApp li,
+.stApp strong,
+.stApp small,
+.stApp div {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stMarkdownContainer"] p,
+.stApp [data-testid="stMarkdownContainer"] span,
+.stApp [data-testid="stCaptionContainer"],
+.stApp [data-testid="stCaptionContainer"] p {
+    color: var(--ink);
+}
+
+/* ---------- Main layout ---------- */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+.stMain,
+[data-testid="stAppViewContainer"] {
+    background: var(--canvas) !important;
+}
+
+.block-container {
+    padding-top: 2.1rem;
+    padding-bottom: 4rem;
+    max-width: 1380px;
+}
+
+/* ---------- Sidebar ---------- */
 section[data-testid="stSidebar"] {
-    background: #fbfbfa;
+    background: var(--sidebar) !important;
     border-right: 1px solid var(--line);
 }
-section[data-testid="stSidebar"] > div { padding-top: 1.8rem; }
+
+section[data-testid="stSidebar"] > div {
+    padding-top: 1.8rem;
+}
+
+section[data-testid="stSidebar"] * {
+    color: var(--ink);
+}
+
+section[data-testid="stSidebar"] [data-testid="stCaptionContainer"],
+section[data-testid="stSidebar"] [data-testid="stCaptionContainer"] * {
+    color: var(--muted) !important;
+}
+
+/* ---------- Brand ---------- */
 .brand {
-    font-size: 1.05rem; font-weight: 700; letter-spacing: -0.04em;
-    display:flex; align-items:center; gap:.55rem; margin-bottom:2rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    margin-bottom: 2rem;
+    color: var(--ink) !important;
 }
+
 .brand-mark {
-    width:28px;height:28px;border-radius:9px;background:#202124;color:#ffffff;
-    display:inline-flex;align-items:center;justify-content:center;font-size:15px;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: var(--ink);
+    color: #ffffff !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
 }
+
+/* ---------- Typography ---------- */
 .eyebrow {
-    color: var(--muted); font-size:.72rem; text-transform:uppercase;
-    letter-spacing:.13em; font-weight:700;
+    color: var(--muted) !important;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    font-weight: 700;
 }
+
 .hero-title {
-    font-family:'Newsreader', Georgia, serif; font-size:3.15rem;
-    letter-spacing:-.045em; line-height:1.05; margin:.45rem 0 .65rem;
+    font-family: 'Newsreader', Georgia, serif !important;
+    color: #202124 !important;
+    font-size: 3.15rem;
+    letter-spacing: -.045em;
+    line-height: 1.05;
+    margin: .45rem 0 .65rem;
+    font-weight: 400;
 }
-.hero-sub { color:var(--muted); font-size:1rem; max-width:650px; line-height:1.65; }
+
+.hero-sub {
+    color: #737780 !important;
+    font-size: 1rem;
+    max-width: 650px;
+    line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ink) !important;
+}
+
+/* ---------- Panels ---------- */
 .panel {
-    background:var(--paper); border:1px solid var(--line); border-radius:18px;
-    padding:1.25rem 1.35rem; box-shadow:0 5px 24px rgba(20,25,35,.025);
-    color:var(--ink);
+    background: var(--paper) !important;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 1.25rem 1.35rem;
+    box-shadow: 0 5px 24px rgba(20,25,35,.025);
+    color: var(--ink) !important;
 }
-.panel-title { font-size:1rem; font-weight:700; letter-spacing:-.02em; }
-.panel-note { color:var(--muted); font-size:.83rem; margin-top:.2rem; }
+
+.panel-title {
+    color: var(--ink) !important;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+}
+
+.panel-note {
+    color: var(--muted) !important;
+    font-size: .83rem;
+    margin-top: .2rem;
+}
+
+/* ---------- Workflow stages ---------- */
 .stage {
-    display:flex; align-items:center; gap:.8rem; padding:.8rem 0;
-    border-bottom:1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding: .8rem 0;
+    border-bottom: 1px solid #f0f0f0;
 }
-.stage:last-child { border-bottom:0; }
+
+.stage:last-child {
+    border-bottom: 0;
+}
+
 .stage-num {
-    width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
-    justify-content:center;background:#f1f2f4;color:#666;font-size:.78rem;font-weight:700;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f2f4;
+    color: #666 !important;
+    font-size: .78rem;
+    font-weight: 700;
 }
-.stage-name { font-weight:600; font-size:.9rem; }
-.stage-desc { color:var(--muted); font-size:.77rem; margin-top:2px; }
+
+.stage-name {
+    color: var(--ink) !important;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.stage-desc {
+    color: var(--muted) !important;
+    font-size: .77rem;
+    margin-top: 2px;
+}
+
+/* ---------- Buttons ---------- */
 div.stButton > button[kind="primary"] {
-    background:#202124; border:1px solid #202124; border-radius:999px;
-    color:#ffffff !important; padding:.62rem 1.2rem; font-weight:600; min-height:2.8rem;
+    background: #202124 !important;
+    border: 1px solid #202124 !important;
+    border-radius: 999px;
+    color: #ffffff !important;
+    padding: .62rem 1.2rem;
+    font-weight: 600;
+    min-height: 2.8rem;
 }
-div.stButton > button[kind="primary"]:hover { background:#3a3b3e; border-color:#3a3b3e; }
-div.stButton > button {
-    border-radius:999px; border-color:#dedfe2; color:var(--ink) !important; font-weight:600;
+
+div.stButton > button[kind="primary"] * {
+    color: #ffffff !important;
 }
-.stTextArea textarea, .stTextInput input {
-    border-radius:13px !important; border-color:#dedfe2 !important;
-    background:var(--paper) !important; color:var(--ink) !important;
+
+div.stButton > button[kind="primary"]:hover {
+    background: #3a3b3e !important;
+    border-color: #3a3b3e !important;
 }
-div[data-testid="stTabs"] button { font-weight:600; }
+
+div.stButton > button:not([kind="primary"]) {
+    background: #ffffff !important;
+    border-radius: 999px;
+    border: 1px solid #dedfe2 !important;
+    color: var(--ink) !important;
+    font-weight: 600;
+}
+
+div.stButton > button:not([kind="primary"]):hover {
+    background: #f1f2f4 !important;
+    border-color: #c8c9cc !important;
+}
+
+/* ---------- Text inputs ---------- */
+.stTextArea textarea,
+.stTextInput input {
+    border-radius: 13px !important;
+    border: 1px solid #dedfe2 !important;
+    background: #ffffff !important;
+    color: #202124 !important;
+    -webkit-text-fill-color: #202124 !important;
+    caret-color: #202124 !important;
+}
+
+.stTextArea textarea::placeholder,
+.stTextInput input::placeholder {
+    color: #92969e !important;
+    -webkit-text-fill-color: #92969e !important;
+    opacity: 1 !important;
+}
+
+.stTextArea label,
+.stTextInput label {
+    color: var(--ink) !important;
+}
+
+/* ---------- Tabs ---------- */
+div[data-testid="stTabs"] button {
+    font-weight: 600;
+    color: var(--muted) !important;
+}
+
+div[data-testid="stTabs"] button[aria-selected="true"] {
+    color: var(--ink) !important;
+}
+
+/* ---------- Metrics ---------- */
 div[data-testid="stMetric"] {
-    background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:1rem;
-    color:var(--ink);
+    background: #ffffff !important;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1rem;
+    color: var(--ink) !important;
 }
+
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: var(--ink) !important;
+}
+
+/* ---------- Research paper ---------- */
 .paper {
-    background:var(--paper); border:1px solid var(--line); border-radius:18px;
-    color:var(--ink); padding:2rem 2.2rem; line-height:1.8; white-space:pre-wrap;
+    background: #ffffff !important;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    color: #202124 !important;
+    padding: 2rem 2.2rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
 }
-div[data-testid="stAlert"] { border-radius:14px; }
-footer { visibility:hidden; }
+
+.paper * {
+    color: #202124 !important;
+}
+
+/* ---------- Expanders ---------- */
+[data-testid="stExpander"] {
+    background: #ffffff !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary p {
+    color: var(--ink) !important;
+}
+
+/* ---------- Alerts and captions ---------- */
+div[data-testid="stAlert"] {
+    border-radius: 14px;
+}
+
+[data-testid="stCaptionContainer"],
+[data-testid="stCaptionContainer"] p {
+    color: var(--muted) !important;
+}
+
+/* ---------- Footer ---------- */
+footer {
+    visibility: hidden;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -151,23 +389,42 @@ st.markdown(
 st.write("")
 
 # ---------- Research input ----------
-st.markdown('<div class="panel">', unsafe_allow_html=True)
-st.markdown('<div class="panel-title">What are you researching?</div>', unsafe_allow_html=True)
-st.markdown('<div class="panel-note">Be specific. A focused question usually produces stronger research.</div>', unsafe_allow_html=True)
 
-topic = st.text_area(
-    "Research topic",
-    value=st.session_state.research_topic or "The impact of AI on human cognitive abilities",
-    height=105,
-    label_visibility="collapsed",
-    placeholder="e.g. How does generative AI affect critical thinking and learning outcomes?",
-)
-col_a, col_b = st.columns([1, 5])
-with col_a:
-    run_clicked = st.button("Start research  →", type="primary", use_container_width=True)
-with col_b:
-    st.caption("The workflow runs search → source reading → paper writing → critical review.")
-st.markdown('</div>', unsafe_allow_html=True)
+# ---------- Research input ----------
+with st.container(border=True):
+
+    st.markdown(
+        '<div class="panel-title">What are you researching?</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="panel-note">Be specific. A focused question usually produces stronger research.</div>',
+        unsafe_allow_html=True
+    )
+
+    topic = st.text_area(
+        "Research topic",
+        value=st.session_state.research_topic or "The impact of AI on human cognitive abilities",
+        height=105,
+        label_visibility="collapsed",
+        placeholder="e.g. How does generative AI affect critical thinking and learning outcomes?",
+    )
+
+    col_a, col_b = st.columns([1, 5])
+
+    with col_a:
+        run_clicked = st.button(
+            "Start research →",
+            type="primary",
+            use_container_width=True
+        )
+
+    with col_b:
+        st.caption(
+            "The workflow runs search → source reading → paper writing → critical review."
+        )
+
 
 # ---------- Pipeline execution ----------
 if run_clicked:
