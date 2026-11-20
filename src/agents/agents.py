@@ -5,28 +5,28 @@ from langchain.tools import tool
 from langchain.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
-from tools.tools import web_search_tool, scrape_url_tool
+from src.tools.tools import web_search_tool, scrape_url_tool
 from langchain_core.output_parsers import StrOutputParser
 
 load_dotenv()
 os.environ["GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY")
 
 model = init_chat_model(
-    model="gemini-3.1-flash-light",
+    model="gemini-3.1-flash-lite",
     model_provider="google_genai",
 )
 
 def build_search_agent():
     return create_agent(
         model=model,
-        tool=[web_search_tool]
+        tools=[web_search_tool]
         )
 
 
 def build_reader_agent():
     return create_agent(
         model=model,
-        tool=[scrape_url_tool]
+        tools=[scrape_url_tool]
         )
 
 # writer chain
